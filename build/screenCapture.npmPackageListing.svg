@@ -1,16 +1,16 @@
 <svg height="206" width="720" xmlns="http://www.w3.org/2000/svg">
 <rect height="206" fill="#555" width="720"></rect>
 <text fill="#7f7" font-family="Courier New" font-size="12" xml:space="preserve">
-<tspan x="10" y="26">  0.  2017-04-07 03:00:01 +0000   282711 byte  .</tspan>
-<tspan x="10" y="42">  1.  2017-04-07 03:00:01 +0000    21915 byte  CHANGELOG.md</tspan>
-<tspan x="10" y="58">  2.  2017-04-07 03:00:01 +0000     1088 byte  LICENSE.md</tspan>
-<tspan x="10" y="74">  3.  2017-04-07 03:00:01 +0000    21065 byte  README.md</tspan>
-<tspan x="10" y="90">  4.  2017-04-07 03:00:01 +0000    22114 byte  dist/howler.core.min.js</tspan>
-<tspan x="10" y="106">  5.  2017-04-07 03:00:01 +0000    88613 byte  dist/howler.js</tspan>
-<tspan x="10" y="122">  6.  2017-04-07 03:00:01 +0000    28798 byte  dist/howler.min.js</tspan>
-<tspan x="10" y="138">  7.  2017-04-07 03:00:01 +0000     6782 byte  dist/howler.spatial.min.js</tspan>
-<tspan x="10" y="154">  8.  2017-04-07 03:00:01 +0000     3725 byte  package.json</tspan>
-<tspan x="10" y="170">  9.  2017-04-07 03:00:01 +0000    67813 byte  src/howler.core.js</tspan>
-<tspan x="10" y="186"> 10.  2017-04-07 03:00:01 +0000    20798 byte  src/plugins/howler.spatial.js</tspan>
+<tspan x="10" y="26">  0.  2017-04-07 03:01:32 +0000   282711 byte  .</tspan>
+<tspan x="10" y="42">  1.  2017-04-07 03:01:32 +0000    21915 byte  CHANGELOG.md</tspan>
+<tspan x="10" y="58">  2.  2017-04-07 03:01:32 +0000     1088 byte  LICENSE.md</tspan>
+<tspan x="10" y="74">  3.  2017-04-07 03:01:32 +0000    21065 byte  README.md</tspan>
+<tspan x="10" y="90">  4.  2017-04-07 03:01:32 +0000    22114 byte  dist/howler.core.min.js</tspan>
+<tspan x="10" y="106">  5.  2017-04-07 03:01:32 +0000    88613 byte  dist/howler.js</tspan>
+<tspan x="10" y="122">  6.  2017-04-07 03:01:32 +0000    28798 byte  dist/howler.min.js</tspan>
+<tspan x="10" y="138">  7.  2017-04-07 03:01:32 +0000     6782 byte  dist/howler.spatial.min.js</tspan>
+<tspan x="10" y="154">  8.  2017-04-07 03:01:32 +0000     3725 byte  package.json</tspan>
+<tspan x="10" y="170">  9.  2017-04-07 03:01:32 +0000    67813 byte  src/howler.core.js</tspan>
+<tspan x="10" y="186"> 10.  2017-04-07 03:01:32 +0000    20798 byte  src/plugins/howler.spatial.js</tspan>
 </text>
 </svg>
