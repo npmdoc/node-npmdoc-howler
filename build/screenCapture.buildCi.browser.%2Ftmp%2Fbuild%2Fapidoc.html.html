@@ -75,12 +75,6 @@
 
         </li>
 
-        <li>
-
-            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">howler.</span>howler_core</span>
-
-        </li>
-
     </ol></li>
 
     <li class="apidocModuleLi"><a href="#apidoc.module.howler.Howl">module howler.Howl</a><ol>
@@ -397,25 +391,6 @@
 
     </ol></li>
 
-    <li class="apidocModuleLi"><a href="#apidoc.module.howler.howler_core">module howler.howler_core</a><ol>
-
-        <li>
-
-            <a class="apidocElementLiA" href="#apidoc.element.howler.howler_core.Howl">
-            function <span class="apidocSignatureSpan">howler.howler_core.</span>Howl
-            <span class="apidocSignatureSpan">(o)</span>
-            </a>
-
-        </li>
-
-        <li>
-
-            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">howler.howler_core.</span>Howler</span>
-
-        </li>
-
-    </ol></li>
-
 </ol></div>
 
 <div class="apidocSectionDiv">
@@ -442,8 +417,6 @@
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
-
-
 
 
 
@@ -1120,22 +1093,20 @@ if (sound._node) {
   return self;
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-
-// Play returns a uniqe Sound ID that can be passed
-// into any method on Howl to control that specific sound.
-var id1 = sound.play();
-var id2 = sound.play();
-
-// Fade out the first sound and speed up the second.
-sound.<span class="apidocCodeKeywordSpan">fade</span>(1, 0, 1000, id1);
-sound.rate(1.5, id2);
+sound.pause(id);
 ```
 
-More in-depth examples (with accompanying live demos) can be found in the [examples directory](https://github.com/goldfire/howler
-.js/tree/master/examples).
+- The deprecated `fadeIn` and `fadeOut` methods have been removed in favor of the single `fade` method.
 
+```javascript
+// Fade in a sound.
+sound.<span class="apidocCodeKeywordSpan">fade</span>(0, 1, 1000);
 
-## Core
+// Fade out the sound once the previous fade has ended.
+sound.once('fade', function(){
+  sound.fade(1, 0, 1000);
+});
+```
 ...</pre></li>
     </ul>
 
@@ -1409,21 +1380,20 @@ HowlerGlobal.prototype = {
   return self;
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-var self = this;
+sound.seek(10);
+```
 
-// If the sound hasn't loaded, add it to the load queue to mute when capable.
-if (self._state !== 'loaded') {
-  self._queue.push({
-    event: 'mute',
-    action: function() {
-      self.<span class="apidocCodeKeywordSpan">mute</span>(muted, id);
-    }
-  });
+- `mute` and `unmute` have been consolidated into `mute`.
 
-  return self;
-}
+```javascript
+// Mute a sound (or all sounds).
+sound.<span class="apidocCodeKeywordSpan">mute</span>(true);
+Howler.mute(true);
 
-// If applying mute/unmute to all sounds, update the group's value.
+// Unmute a sound (or all sounds).
+sound.mute(false);
+Howler.mute(false);
+```
 ...</pre></li>
     </ul>
 
@@ -1465,20 +1435,22 @@ if (self._state !== 'loaded') {
   return self;
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-    if (!events[i].id || events[i].id === id || event === 'load') {
-      setTimeout(function(fn) {
-        fn.call(this, id, msg);
-      }.bind(self, events[i].fn), 0);
+- Audio on Chrome for Android no longer gets stuck after a period of inactivity.
+- Crash in iOS &lt;9 webview.
+- Bug in iOS that can cause audio distortion when opening/closing browser.
+- Only setup AudioContext after first `Howl` is setup so that background audio on mobile devices behaves as expected.
 
-      // If this event was setup with `once`, remove it.
-      if (events[i].once) {
-        self.<span class="apidocCodeKeywordSpan">off</span>(event, events[i].fn, events[i].id);
-      }
-    }
-  }
+## 1.1.29 (January 22, 2016)
+- `ADDED` Error messages added onto each `loaderror` event (thanks Philip Silva).
+- `FIXED` Various edge-case bugs by no longer comparing functions by string in `.<span class="apidocCodeKeywordSpan">off</span>()` (
+thanks richard-livingston).
+- `FIXED` Edge case where multiple overlapping instances of the same sound won't all fire `end` (thanks richard-livingston).
+- `FIXED` `end` event now fires correctly when changing the `rate` of a sound.
 
-  return self;
-},
+## 1.1.28 (October 22, 2015)
+- `FIXED` Typo with iOS enabler that was preventing it from working.
+
+## 1.1.27 (October 2, 2015)
 ...</pre></li>
     </ul>
 
@@ -1538,21 +1510,22 @@ var sound = new Howl({
   return self;
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-##### Listen for events:
+- The deprecated `fadeIn` and `fadeOut` methods have been removed in favor of the single `fade` method.
+
 ```javascript
-var sound = new Howl({
-  src: ['sound.webm', 'sound.mp3']
-});
+// Fade in a sound.
+sound.fade(0, 1, 1000);
 
-// Clear listener after first call.
-sound.<span class="apidocCodeKeywordSpan">once</span>('load', function(){
-  sound.play();
+// Fade out the sound once the previous fade has ended.
+sound.<span class="apidocCodeKeywordSpan">once</span>('fade', function(){
+  sound.fade(1, 0, 1000);
 });
+```
 
-// Fires when the sound finishes playing.
-sound.on('end', function(){
-  console.log('Finished!');
-});
+### New Features
+- Lots of general code cleanup, simplification and reorganization.
+- Howler.js is now modularized. The core represents the initial goal for howler.js with 100% compatibility across HTML5 Audio and
+ Web Audio. The spatial plugin adds spatial and stereo support through Web Audio API.
 ...</pre></li>
     </ul>
 
@@ -1632,7 +1605,23 @@ sound.on('end', function(){
 
   return self;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+}
+
+// If the sound hasn't loaded, add it to the load queue to change orientation when capable.
+if (self._state !== 'loaded') {
+  self._queue.push({
+    event: 'orientation',
+    action: function() {
+      self.<span class="apidocCodeKeywordSpan">orientation</span>(x, y, z, id);
+    }
+  });
+
+  return self;
+}
+
+// Set the defaults for optional 'y' &amp; 'z'.
+...</pre></li>
     </ul>
 
 
@@ -1805,21 +1794,22 @@ sound.on('end', function(){
   return self;
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-var self = this;
+- The `play` method no longer takes a callback and immediately returns the playback sound id (this means you can no longer chain
+ onto the `play` method, but all others work the same).
 
-// If the sound hasn't loaded, add it to the load queue to pause when capable.
-if (self._state !== 'loaded') {
-  self._queue.push({
-    event: 'pause',
-    action: function() {
-      self.<span class="apidocCodeKeywordSpan">pause</span>(id);
-    }
-  });
+```javascript
+// Get sound id for a specific playback.
+var id = sound.play();
 
-  return self;
-}
+// Pause this playback.
+sound.<span class="apidocCodeKeywordSpan">pause</span>(id);
+```
 
-// If no id is passed, get all ID's to be paused.
+- The deprecated `fadeIn` and `fadeOut` methods have been removed in favor of the single `fade` method.
+
+```javascript
+// Fade in a sound.
+sound.fade(0, 1, 1000);
 ...</pre></li>
     </ul>
 
@@ -1960,21 +1950,21 @@ if (self._state !== 'loaded') {
       var event = !isRunning &amp;&amp; self._state === 'loaded' ? 'resume' : 'load';
       self.once(event, playWebAudio, isRunn ...</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-
-##### Most basic, play an MP3:
-```javascript
-var sound = new Howl({
-src: ['sound.mp3']
-});
-
-sound.<span class="apidocCodeKeywordSpan">play</span>();
+Howler.mute(false);
 ```
 
-##### More playback options:
+- The `play` method no longer takes a callback and immediately returns the playback sound id (this means you can no longer chain
+ onto the `play` method, but all others work the same).
+
 ```javascript
-var sound = new Howl({
-src: ['sound.webm', 'sound.mp3', 'sound.wav'],
-autoplay: true,
+// Get sound id for a specific playback.
+var id = sound.<span class="apidocCodeKeywordSpan">play</span>();
+
+// Pause this playback.
+sound.pause(id);
+```
+
+- The deprecated `fadeIn` and `fadeOut` methods have been removed in favor of the single `fade` method.
 ...</pre></li>
     </ul>
 
@@ -2095,7 +2085,23 @@ sound._ended = false;
 
   return self;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+}
+
+// If the sound hasn't loaded, add it to the load queue to change position when capable.
+if (self._state !== 'loaded') {
+  self._queue.push({
+    event: 'pos',
+    action: function() {
+      self.<span class="apidocCodeKeywordSpan">pos</span>(x, y, z, id);
+    }
+  });
+
+  return self;
+}
+
+// Set the defaults for optional 'y' &amp; 'z'.
+...</pre></li>
     </ul>
 
 
@@ -2301,21 +2307,21 @@ More in-depth examples (with accompanying live demos) can be found in the [examp
   return self;
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-        self._clearTimer(ids[i]);
+### Breaking Changes
+- The `buffer` option is now named `html5`. Use this to force HTML5 Audio usage.
+- The `urls` option is now named `src` to specify the audio file(s) to play.
+- The `pos` method has been renamed to `seek`.
 
-        // Get the sound.
-        var sound = self._soundById(ids[i]);
+```javascript
+// Change the seek position of a sound (in seconds).
+sound.<span class="apidocCodeKeywordSpan">seek</span>(10);
+```
 
-        if (sound &amp;&amp; !sound._paused) {
-// Reset the seek position.
-sound._seek = self.<span class="apidocCodeKeywordSpan">seek</span>(ids[i]);
-sound._rateSeek = 0;
-sound._paused = true;
+- `mute` and `unmute` have been consolidated into `mute`.
 
-// Stop currently running fades.
-self._stopFade(ids[i]);
-
-if (sound._node) {
+```javascript
+// Mute a sound (or all sounds).
+sound.mute(true);
 ...</pre></li>
     </ul>
 
@@ -2413,7 +2419,23 @@ if (sound._node) {
 
   return self;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+  // Stop right here if not using Web Audio.
+  if (!self.ctx || !self.ctx.listener) {
+    return self;
+  }
+
+  // Loop through all Howls and update their stereo panning.
+  for (var i=self._howls.length-1; i&gt;=0; i--) {
+    self._howls[i].<span class="apidocCodeKeywordSpan">stereo</span>(pan);
+  }
+
+  return self;
+};
+
+/**
+ * Get/set the position of the listener in 3D cartesian space. Sounds using
+...</pre></li>
     </ul>
 
 
@@ -2697,36 +2719,6 @@ if (timeout !== Infinity) {
 }
 ...</pre></li>
     </ul>
-
-
-</div>
-
-<div class="apidocSectionDiv">
-<h1><a href="#apidoc.module.howler.howler_core" id="apidoc.module.howler.howler_core">module howler.howler_core</a></h1>
-
-
-    <h2>
-        <a href="#apidoc.element.howler.howler_core.Howl" id="apidoc.element.howler.howler_core.Howl">
-        function <span class="apidocSignatureSpan">howler.howler_core.</span>Howl
-        <span class="apidocSignatureSpan">(o)</span>
-        </a>
-    </h2>
-    <ul>
-    <li>description and source-code<pre class="apidocCodePre">Howl = function (o) {
-  var self = this;
-
-  // Throw an error if no source is provided.
-  if (!o.src || o.src.length === 0) {
-    console.error('An array of source files must be passed with any new Howl.');
-    return;
-  }
-
-  self.init(o);
-}</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
-    </ul>
-
-
 
 
 </div>
